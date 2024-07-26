@@ -1,0 +1,16 @@
+{
+  "name": "spanner-grpc-client",
+  "version": "1.0.0",
+  "description": "Cloud Spanner over gRPC Proxy",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "chux",
+  "license": "ISC",
+  "devDependencies": {
+    "@google-cloud/spanner": "^7.9.1",
+    "express": "^4.19.2"
+  }
+}
