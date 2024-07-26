@@ -4,7 +4,7 @@ const {Spanner} = require('@google-cloud/spanner');
 
 const app = express()
 const port = 8080
-const projectID = proces
+const projectID = process.env.PROJECT_ID;
 
 // Creates a client
 const spanner = new Spanner({
@@ -35,6 +35,9 @@ app.get('/spanner/listInstances/:project_id', async (req, res) => {
         'x-cloud-trace-context': req.headers['x-cloud-trace-context'],
       }
     }
+  })
+  res.set({
+    'x-cloud-trace-context': req.headers['x-cloud-trace-context'],
   })
   res.send(response)
 })
