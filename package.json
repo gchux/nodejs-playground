@@ -10,7 +10,15 @@
   "author": "chux",
   "license": "ISC",
   "devDependencies": {
+    "lodash": "^4.17.21",
+    "express": "^4.19.2",
     "@google-cloud/spanner": "^7.9.1",
-    "express": "^4.19.2"
+    "extend": "^3.0.2"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21",
+    "express": "^4.19.2",
+    "@google-cloud/spanner": "^7.9.1",
+    "extend": "^3.0.2"
   }
 }
