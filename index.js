@@ -34,12 +34,13 @@ const clientOtherArgs = {
 const sendResponse = (
   httpRequest,
   httpResponse,
+  code,
   data,
 ) => {
   httpResponse.set({
     [X_CLOUD_TRACE_CONTEXT]: httpRequest.headers[X_CLOUD_TRACE_CONTEXT],
   })
-  httpResponse.send(data)
+  httpResponse.status(code).send(data)
 } 
 
 const getGaxOptions = (
@@ -160,7 +161,7 @@ app.get('/init/:project_id/:instance_id/:database_id',
       httpRequest.params['database_id'] || SPANNER_DATABASE_ID,
     )
 
-    sendResponse(httpRequest, httpResponse, isDbReady)
+    sendResponse(httpRequest, httpResponse, isDbReady? 200 : 503, isDbReady)
   })
 
 app.get('/test/:project_id', 
@@ -171,7 +172,7 @@ app.get('/test/:project_id',
       httpRequest.params['project_id'] || PROJECT_ID,
     )
 
-    sendResponse(httpRequest, httpResponse, isDbReady)
+    sendResponse(httpRequest, httpResponse, isDbReady? 200 : 503, isDbReady)
   })
 
 app.get('/listInstances/:project_id',
@@ -181,7 +182,7 @@ app.get('/listInstances/:project_id',
       parent: `projects/${projectID}`
     }
     const response = await _listInstances(request, getGaxOptions(httpRequest, projectID));
-    sendResponse(httpRequest, httpResponse, response)
+    sendResponse(httpRequest, httpResponse, 200, response)
   })
 
 function gracefulShutdown() {
