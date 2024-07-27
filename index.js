@@ -184,6 +184,35 @@ app.get('/listInstances/:project_id',
     sendResponse(httpRequest, httpResponse, response)
   })
 
-app.listen(port, () => {
+function gracefulShutdown() {
+  console.log('Shutting down gracefully...');
+
+  server.close(() => {
+    console.log('Server closed.');
+
+    // Close any other connections or resources here
+
+    process.exit(0);
+  });
+
+  // Force close the server after 5 seconds
+  setTimeout(() => {
+    console.error('Could not close connections in time, forcefully shutting down');
+    process.exit(1);
+  }, 5000);
+}
+
+const server = app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
+
+const serverTerminator = () => {
+  console.log('signal received: terminating HTTP server')
+  server.close(() => {
+    console.log('HTTP server terminated')
+  })
+}
+
+// https://expressjs.com/en/advanced/healthcheck-graceful-shutdown.html
+process.on('SIGTERM', serverTerminator)
+process.on('SIGINT', serverTerminator)
